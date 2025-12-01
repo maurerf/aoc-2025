@@ -27,7 +27,6 @@
 *.exe
 *.out
 *.app
-aoc2025
 
 # Build directories
 build/
