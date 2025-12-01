@@ -1,0 +1,10 @@
+#include "../aoc.h"
+#include "../utils/constexpr_utils.h"
+
+constexpr std::string solveDayXY(std::string_view inputContent) {
+    const auto lines = aoc::utils::split(inputContent, '\n');
+    return "";
+}
+
+// Register this day's solution
+REGISTER_DAY(XY, solveDayXY);
