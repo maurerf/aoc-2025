@@ -1,7 +1,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <numeric>
-#include <stdexcept>
 #include "../aoc.h"
 #include "../utils/constexpr_utils.h"
 
