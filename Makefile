@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++20 -Wall -Wextra -O0
+CXXFLAGS = -std=c++2b -Wall -Wextra -O0 -fconstexpr-steps=10000000
 TARGET = build/aoc2025
 SRCDIR = src
 BUILDDIR = build

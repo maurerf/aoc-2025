@@ -1,78 +1,61 @@
 #include "../aoc.h"
 #include "../utils/constexpr_utils.h"
+#include <algorithm>
 #include <numeric>
-#include <ranges>
 
 // https://adventofcode.com/2025/day/1
 
-class DialState {
-    private:
-        int _dial;
-        int _full_rotation_count;
-    public:
-        constexpr DialState(int number, int full_rotation_count = 0) {
-            _dial = number % 100;
-            _full_rotation_count = full_rotation_count;
-        }
+namespace Day1 {
 
-        constexpr DialState(std::string_view str){
-            // Assume format R/L XY where R=right, L=left, XY= one to two digit number
-            const char direction = str[0];
-            const int number_raw = aoc::utils::parseNumber<int>(str.substr(1));
-            const int number = (direction == 'L') ? (100 - number_raw) : number_raw;
-            _dial = number % 100;
-            _full_rotation_count = number_raw > 0 ? number_raw / 100 : number_raw / -100;
-        }
-        constexpr DialState operator+(DialState other_number) const {
-            return DialState(_dial + other_number._dial); 
-        }
-
-        constexpr int getFullRotationCount() const { return _full_rotation_count; }
-
-        constexpr bool operator==(const DialState& other) const {
-            return _dial == other._dial;
-        }
+constexpr char input_data[] = {
+#embed "../../input/day_1.txt"
 };
+constexpr std::string_view input_string_view{input_data, sizeof(input_data)};
 
-constexpr std::string solveDay01_Part1(std::string_view inputContent) {
-    const auto lines = aoc::utils::split(inputContent, '\n');
-    const DialState dial_start{50};
-    const auto moves = lines
-        | std::views::transform([](const std::string& line) { return DialState{line}; });
+struct Move { int delta; int rotations; };
 
-    std::vector<DialState> positions;
-    positions.reserve( lines.size() );
-    std::inclusive_scan(moves.begin(), moves.end(), std::back_inserter(positions), 
-        std::plus<DialState>{}, dial_start);
-
-    const auto zero_count = std::ranges::count(positions, DialState{0});
-
-    return std::to_string(zero_count);
+constexpr Move parseMove(const std::string& line) {
+    int number = aoc::utils::parseNumber<int>(line.substr(1));
+    return {
+        .delta = (line[0] == 'L') ? (100 - number % 100) % 100 : number % 100,
+        .rotations = number / 100
+    };
 }
 
-// TODO: Fix for moves of length less than 100
-constexpr std::string solveDay01_Part2(std::string_view inputContent) {
-    const auto lines = aoc::utils::split(inputContent, '\n');
-    const auto moves = lines
-        | std::views::transform([](const std::string& line) { return DialState{line}; });
-
-
-    const auto total_full_dial_count = std::accumulate(
-        moves.begin(), moves.end(), 0,
-        [](int acc, const DialState& move) {
-            return acc + move.getFullRotationCount();
-        }
-    );
-
-    return std::to_string(total_full_dial_count);
+constexpr std::vector<Move> parseMoves(std::string_view input) {
+    auto lines = aoc::utils::split(input, '\n');
+    std::vector<Move> moves;
+    moves.reserve(lines.size());
+    std::ranges::transform(lines, std::back_inserter(moves), parseMove);
+    return moves;
 }
 
-constexpr std::string solveDay01(std::string_view inputContent) {
-    const auto part1_result = solveDay01_Part1(inputContent);
-    const auto part2_result = solveDay01_Part2(inputContent);
-    
-    return "Part 1: " + part1_result + "\nPart 2: " + part2_result + "\n";
+consteval int solvePart1(std::string_view input) {
+    auto moves = parseMoves(input);
+
+    auto dialPositions = std::vector<int>{};
+    dialPositions.reserve(moves.size());
+    std::inclusive_scan(moves.begin(), moves.end(), std::back_inserter(dialPositions),
+        [](int dial, Move m) { return (dial + m.delta) % 100; }, 50);
+
+    return std::ranges::count(dialPositions, 0);
 }
 
-// Register this day's solution
+consteval int solvePart2(std::string_view input) {
+    auto moves = parseMoves(input);
+    return std::accumulate(moves.begin(), moves.end(), 0,
+        [](int total, Move m) { return total + m.rotations; });
+}
+
+constexpr int part1_answer = solvePart1(input_string_view);
+constexpr int part2_answer = solvePart2(input_string_view);
+
+} // namespace Day1
+
+std::string solveDay01([[maybe_unused]] std::string_view inputContent) {
+    static_assert(Day1::part1_answer == 1029);
+    static_assert(Day1::part2_answer == 3864);
+    return ""; // TODO: change signature to () -> void and call it checkDayXY() for all days
+}
+
 REGISTER_DAY(1, solveDay01);
