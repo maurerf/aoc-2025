@@ -3,7 +3,6 @@
 #include "../utils/constexpr_utils.h"
 #include <tuple>
 #include <numeric>
-#include <ranges>
 
 // https://adventofcode.com/2025/day/5
 

@@ -72,5 +72,18 @@ namespace utils {
         return numbers;
     }
 
+    template<typename T>
+    constexpr std::vector<std::tuple<T, T>> parseRange(const std::vector<std::string>& rangeStrings) {
+        std::vector<std::tuple<T, T>> ranges;
+        for (const auto& rStr : rangeStrings) {
+            const auto bounds = split(rStr, '-');
+            if (bounds.size() == 2) {
+                const T start = parseNumber<T>(bounds[0]);
+                const T end = parseNumber<T>(bounds[1]);
+                ranges.emplace_back(start, end);
+            }
+        }
+        return ranges;
+    }
 }
 }
