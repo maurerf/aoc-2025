@@ -6,6 +6,13 @@
 
 // https://adventofcode.com/2025/day/3
 
+namespace Day3 {
+
+constexpr char input_data[] = {
+#embed "../../input/day_3.txt"
+};
+constexpr std::string_view input_string_view{input_data, sizeof(input_data)};
+
 constexpr int64_t int64_pow(int64_t base, int exp) {
     if (exp == 0) return 1;    
     return base * int64_pow(base, exp - 1);
@@ -37,7 +44,7 @@ constexpr int64_t maxJoltage(std::string_view joltageString, int digit_count = 2
     return current_digit_contribution + recursive_result;
 }
 
-constexpr std::string solveDay_03_BothParts(std::string_view inputContent, int digit_count = 2) {
+consteval int64_t solveDay_03_BothParts(std::string_view inputContent, int digit_count = 2) {
     const auto lines = aoc::utils::split(inputContent, '\n');
     const int64_t totalJoltage = std::accumulate(
         lines.begin(), lines.end(), int64_t{0},
@@ -46,14 +53,19 @@ constexpr std::string solveDay_03_BothParts(std::string_view inputContent, int d
             return acc + line_result;
         }
     );
-    return std::to_string(totalJoltage);
+    return totalJoltage;
 }
 
-constexpr std::string solveDay03(std::string_view inputContent) {
-    const auto part1 = solveDay_03_BothParts(inputContent, 2);
-    const auto part2 = solveDay_03_BothParts(inputContent,12);
-    return "Part 1: " + part1 + "\nPart 2: " + part2 + "\n";
+constexpr int64_t part1_answer = solveDay_03_BothParts(input_string_view, 2);
+constexpr int64_t part2_answer = solveDay_03_BothParts(input_string_view, 12);
+
+} // namespace Day3
+
+std::string checkDay03([[maybe_unused]] std::string_view inputContent) {
+    static_assert(Day3::part1_answer == 17445);
+    static_assert(Day3::part2_answer == 173229689350551);
+    return "";
 }
 
 // Register this day's solution
-REGISTER_DAY(3, solveDay03);
+REGISTER_DAY(3, checkDay03);

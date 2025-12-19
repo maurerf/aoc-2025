@@ -8,6 +8,13 @@
 #include <vector>
 #include <array>
 
+namespace Day4 {
+
+constexpr char input_data[] = {
+#embed "../../input/day_4.txt"
+};
+constexpr std::string_view input_string_view{input_data, sizeof(input_data)};
+
 enum class Part {
     ONE,
     TWO
@@ -63,7 +70,7 @@ constexpr long processWall(std::vector<std::vector<bool>> wall) {
 
 // TODO: functional approach with views for input parsing
 template<Part part>
-constexpr std::string solveDay04_BothParts(std::string_view inputContent) {
+constexpr long solveDay04_BothParts(std::string_view inputContent) {
     const auto lines = aoc::utils::split(inputContent, '\n');
     
     std::vector<std::vector<bool>> wall;
@@ -79,15 +86,24 @@ constexpr std::string solveDay04_BothParts(std::string_view inputContent) {
 
     const auto ans = processWall<part>(std::move(wall));
     
-    return std::to_string(ans);
+    return ans;
 }
 
-constexpr std::string solveDay04(std::string_view inputContent) {
-    const auto part1_result = solveDay04_BothParts<Part::ONE>(inputContent);
-    const auto part2_result = solveDay04_BothParts<Part::TWO>(inputContent);
+// Part 1 fits within constexpr step limit
+constexpr long part1_answer = solveDay04_BothParts<Part::ONE>(input_string_view);
+
+} // namespace Day4
+
+std::string checkDay04(std::string_view inputContent) {
+    static_assert(Day4::part1_answer == 1604);
     
-    return "Part 1: " + part1_result + "\nPart 2: " + part2_result + "\n";
+    // TODO: Refactor Part 2 to compile-time evaluation: currently very slow
+    const long part2_answer = Day4::solveDay04_BothParts<Day4::Part::TWO>(inputContent);
+    if (part2_answer != 9397) {
+        return "FAILED";
+    }
+    return "";
 }
 
 // Register this day's solution
-REGISTER_DAY(4, solveDay04);
+REGISTER_DAY(4, checkDay04);

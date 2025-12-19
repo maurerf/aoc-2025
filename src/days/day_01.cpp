@@ -52,10 +52,10 @@ constexpr int part2_answer = solvePart2(input_string_view);
 
 } // namespace Day1
 
-std::string solveDay01([[maybe_unused]] std::string_view inputContent) {
+std::string checkDay01([[maybe_unused]] std::string_view inputContent) {
     static_assert(Day1::part1_answer == 1029);
     static_assert(Day1::part2_answer == 3864);
     return ""; // TODO: change signature to () -> void and call it checkDayXY() for all days
 }
 
-REGISTER_DAY(1, solveDay01);
+REGISTER_DAY(1, checkDay01);

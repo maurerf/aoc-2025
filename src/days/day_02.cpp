@@ -6,6 +6,13 @@
 
 // https://adventofcode.com/2025/day/2
 
+namespace Day2 {
+
+constexpr char input_data[] = {
+#embed "../../input/day_2.txt"
+};
+constexpr std::string_view input_string_view{input_data, sizeof(input_data)};
+
 enum class Part {
     ONE,
     TWO
@@ -76,7 +83,7 @@ constexpr long illegalIDSum(const std::tuple<long, long>& range)
 }
 
 template<Part part>
-constexpr std::string solveDay02_Parts(std::string_view inputContent) {
+constexpr long solveDay02_Parts(std::string_view inputContent) {
     const auto lines = aoc::utils::split(inputContent, '\n');
     const auto ranges = parseRanges(lines[0]);
 
@@ -87,15 +94,22 @@ constexpr std::string solveDay02_Parts(std::string_view inputContent) {
         }
     );
 
-    return std::to_string(totalIllegalSum);
+    return totalIllegalSum;
 }
 
-constexpr std::string solveDay02(std::string_view inputContent) {
-    const auto part1Result = solveDay02_Parts<Part::ONE>(inputContent);
-    const auto part2Result = solveDay02_Parts<Part::TWO>(inputContent);
+} // namespace Day2
 
-    return "Part 1:\n" + part1Result + "\nPart 2:\n" + part2Result + "\n";
+// TODO: Refactor to compile-time evaluation: currently very slow
+std::string checkDay02(std::string_view inputContent) {
+    const long part1_answer = Day2::solveDay02_Parts<Day2::Part::ONE>(inputContent);
+    const long part2_answer = Day2::solveDay02_Parts<Day2::Part::TWO>(inputContent);
+    
+    // Runtime assertions since compile-time evaluation exceeds step limit
+    if (part1_answer != 23701357374 || part2_answer != 34284458938) {
+        return "FAILED";
+    }
+    return "";
 }
 
 // Register this day's solution
-REGISTER_DAY(2, solveDay02);
+REGISTER_DAY(2, checkDay02);

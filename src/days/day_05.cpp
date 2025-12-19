@@ -6,7 +6,14 @@
 
 // https://adventofcode.com/2025/day/5
 
-constexpr std::string solveDay05_Part1(const std::vector<std::tuple<int64_t, int64_t>> fresh_ranges, const std::vector<int64_t> ids) {
+namespace Day5 {
+
+constexpr char input_data[] = {
+#embed "../../input/day_5.txt"
+};
+constexpr std::string_view input_string_view{input_data, sizeof(input_data)};
+
+consteval int64_t solveDay05_Part1(const std::vector<std::tuple<int64_t, int64_t>> fresh_ranges, const std::vector<int64_t> ids) {
     const auto fresh_count = std::accumulate(
             ids.begin(), ids.end(), int64_t{0},
             [&fresh_ranges](int64_t acc, int64_t id) constexpr {
@@ -21,10 +28,10 @@ constexpr std::string solveDay05_Part1(const std::vector<std::tuple<int64_t, int
             }
         );
 
-    return std::to_string(fresh_count);
+    return fresh_count;
 }
 
-constexpr std::string solveDay05_Part2(const std::vector<std::tuple<int64_t, int64_t>> fresh_ranges) {
+consteval int64_t solveDay05_Part2(const std::vector<std::tuple<int64_t, int64_t>> fresh_ranges) {
     // Sort ranges and merge overlapping ones
     std::vector<std::tuple<int64_t, int64_t>> sorted_ranges = fresh_ranges;
     std::sort(sorted_ranges.begin(), sorted_ranges.end(),
@@ -56,10 +63,10 @@ constexpr std::string solveDay05_Part2(const std::vector<std::tuple<int64_t, int
     );
     
     
-    return std::to_string(total_fresh_count);
+    return total_fresh_count;
 }
 
-constexpr std::string solveDay05(std::string_view inputContent) {
+consteval std::tuple<int64_t, int64_t> solveDay05(std::string_view inputContent) {
     const auto blocks = aoc::utils::split(inputContent, "\n\n");
     
     const auto fresh_ranges_lines = aoc::utils::split(blocks[0], '\n');
@@ -71,8 +78,20 @@ constexpr std::string solveDay05(std::string_view inputContent) {
     const auto part1_result = solveDay05_Part1(fresh_ranges, ids);
     const auto part2_result = solveDay05_Part2(fresh_ranges);
 
-    return "Part 1: " + part1_result + "\nPart 2: " + part2_result + "\n";
+    return {part1_result, part2_result};
+}
+
+constexpr auto answers = solveDay05(input_string_view);
+constexpr int64_t part1_answer = std::get<0>(answers);
+constexpr int64_t part2_answer = std::get<1>(answers);
+
+} // namespace Day5
+
+std::string checkDay05([[maybe_unused]] std::string_view inputContent) {
+    static_assert(Day5::part1_answer == 607);
+    static_assert(Day5::part2_answer == 342433357244012);
+    return "";
 }
 
 // Register this day's solution
-REGISTER_DAY(5, solveDay05);
+REGISTER_DAY(5, checkDay05);
