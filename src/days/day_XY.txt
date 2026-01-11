@@ -1,10 +1,45 @@
 #include "../aoc.h"
 #include "../utils/constexpr_utils.h"
+#include <tuple>
 
-constexpr std::string solveDayXY(std::string_view inputContent) {
-    const auto lines = aoc::utils::split(inputContent, '\n');
-    return "";
+// https://adventofcode.com/2025/day/XY
+
+namespace DayXY {
+
+constexpr char input_data[] = {
+#embed "../../input/day_XY.txt"
+};
+constexpr std::string_view input_string_view{input_data, sizeof(input_data)};
+
+constexpr int64_t solveDayXY_Part1(const std::vector<std::string>& lines) {
+    // TODO: implement
+    return 0;
+}
+
+constexpr int64_t solveDayXY_Part2(const std::vector<std::string>& lines) {
+    // TODO: implement
+    return 0;
+}
+
+consteval std::tuple<int64_t, int64_t> solveDayXY(std::string_view inputContent) {
+    const auto lines = aoc::utils::split(inputContent, '\n', true);
+
+    const auto part1 = solveDayXY_Part1(lines);
+    const auto part2 = solveDayXY_Part2(lines);
+
+    return {part1, part2};
+}
+
+constexpr auto answers = solveDayXY(input_string_view);
+constexpr int64_t part1_answer = std::get<0>(answers);
+constexpr int64_t part2_answer = std::get<1>(answers);
+
+void checkDayXY() {
+    // static_assert(part1_answer == ...);
+    // static_assert(part2_answer == ...);
 }
 
 // Register this day's solution
-REGISTER_DAY(XY, solveDayXY);
+REGISTER_DAY(XY, checkDayXY);
+
+} // namespace DayXY

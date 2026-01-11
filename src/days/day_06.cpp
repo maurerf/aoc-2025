@@ -62,10 +62,9 @@ constexpr auto answers = solveDay06(input_string_view);
 constexpr int64_t part1_answer = std::get<0>(answers);
 // constexpr int64_t part2_answer = std::get<1>(answers);
 
-std::string checkDay06([[maybe_unused]] std::string_view inputContent) {
+void checkDay06() {
     static_assert(part1_answer == 4583860641327);
     // static_assert(part2_answer == ...);
-    return "";
 }
 
 // Register this day's solution

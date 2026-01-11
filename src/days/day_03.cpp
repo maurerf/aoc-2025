@@ -61,10 +61,9 @@ constexpr int64_t part2_answer = solveDay_03_BothParts(input_string_view, 12);
 
 } // namespace Day3
 
-std::string checkDay03([[maybe_unused]] std::string_view inputContent) {
+void checkDay03() {
     static_assert(Day3::part1_answer == 17445);
     static_assert(Day3::part2_answer == 173229689350551);
-    return "";
 }
 
 // Register this day's solution

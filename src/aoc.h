@@ -7,8 +7,8 @@
 
 namespace aoc {
 
-    // DaySolver takes file content, not file path
-    using DaySolver = std::function<std::string(std::string_view)>;
+    // DaySolver runs static_asserts/checks, no input needed
+    using DaySolver = std::function<void()>;
 
     class SolutionRegistry {
     public:

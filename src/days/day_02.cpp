@@ -1,5 +1,6 @@
 #include "../aoc.h"
 #include "../utils/constexpr_utils.h"
+#include "../utils/parsing.h"
 #include <tuple>
 #include <numeric>
 #include <ranges>
@@ -100,15 +101,15 @@ constexpr long solveDay02_Parts(std::string_view inputContent) {
 } // namespace Day2
 
 // TODO: Refactor to compile-time evaluation: currently very slow
-std::string checkDay02(std::string_view inputContent) {
+void checkDay02() {
+    const auto inputContent = *aoc::utils::readFile("input/day_2.txt");
     const long part1_answer = Day2::solveDay02_Parts<Day2::Part::ONE>(inputContent);
     const long part2_answer = Day2::solveDay02_Parts<Day2::Part::TWO>(inputContent);
     
     // Runtime assertions since compile-time evaluation exceeds step limit
     if (part1_answer != 23701357374 || part2_answer != 34284458938) {
-        return "FAILED";
+        throw std::runtime_error("Day 02 check failed");
     }
-    return "";
 }
 
 // Register this day's solution

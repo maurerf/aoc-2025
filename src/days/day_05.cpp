@@ -87,10 +87,9 @@ constexpr int64_t part2_answer = std::get<1>(answers);
 
 } // namespace Day5
 
-std::string checkDay05([[maybe_unused]] std::string_view inputContent) {
+void checkDay05() {
     static_assert(Day5::part1_answer == 607);
     static_assert(Day5::part2_answer == 342433357244012);
-    return "";
 }
 
 // Register this day's solution

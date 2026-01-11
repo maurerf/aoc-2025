@@ -26,34 +26,17 @@ namespace aoc {
             return solvers_[d] ? std::make_optional(solvers_[d]) : std::nullopt;
         };
         
-        // Pure file content reading
-        const auto readInputContent = [](int d) -> std::optional<std::string> {
-            const auto path = std::filesystem::path{"input"} / ("day_" + std::to_string(d) + ".txt");
-            if (std::filesystem::exists(path)) {
-                return aoc::utils::readFile(path.string());
-            }
-            return std::nullopt;
-        };
-        
         // Monadic chain with early returns
         if (const auto valid_day = validateDay(day)) {
             if (const auto solver = getSolver(*valid_day)) {
-                if (const auto content = readInputContent(*valid_day)) {
-                    if (content->empty()) {
-                        std::cerr << "Input file is empty for day " << day << "\n";
-                        return false;
-                    }
-                    std::cout << "=== Advent of Code 2025 - Day " << day << " ===\n";
-                    try {
-                        const auto result = (*solver)(*content);
-                        std::cout << result;
-                        return true;
-                    } catch (const std::exception& e) {
-                        std::cerr << "Error running day " << day << ": " << e.what() << "\n";
-                        return false;
-                    }
-                } else {
-                    std::cerr << "Input file not found for day " << day << "\n";
+                std::cout << "=== Advent of Code 2025 - Day " << day << " ===\n";
+                try {
+                    (*solver)();
+                    std::cout << "OK\n";
+                    return true;
+                } catch (const std::exception& e) {
+                    std::cerr << "Error running day " << day << ": " << e.what() << "\n";
+                    return false;
                 }
             } else {
                 std::cerr << "Day " << day << " not implemented yet!\n";

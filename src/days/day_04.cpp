@@ -1,5 +1,6 @@
 #include "../aoc.h"
 #include "../utils/constexpr_utils.h"
+#include "../utils/parsing.h"
 
 // https://adventofcode.com/2025/day/4
 
@@ -94,15 +95,15 @@ constexpr long part1_answer = solveDay04_BothParts<Part::ONE>(input_string_view)
 
 } // namespace Day4
 
-std::string checkDay04(std::string_view inputContent) {
+void checkDay04() {
     static_assert(Day4::part1_answer == 1604);
     
     // TODO: Refactor Part 2 to compile-time evaluation: currently very slow
+    const auto inputContent = *aoc::utils::readFile("input/day_4.txt");
     const long part2_answer = Day4::solveDay04_BothParts<Day4::Part::TWO>(inputContent);
     if (part2_answer != 9397) {
-        return "FAILED";
+        throw std::runtime_error("Day 04 Part 2 check failed");
     }
-    return "";
 }
 
 // Register this day's solution
