@@ -11,32 +11,52 @@ namespace utils {
 
     // Pure string processing functions
     
-    constexpr std::vector<std::string> split(std::string_view str, char delimiter) {
+    constexpr bool isEmptyOrWhitespace(std::string_view str) {
+        if (str.empty()) return true;
+        for (char c : str) {
+            if (c != ' ' && c != '\t') return false;
+        }
+        return true;
+    }
+
+    constexpr std::vector<std::string> split(std::string_view str, char delimiter, bool skipWhitespace = false) {
         std::vector<std::string> result;
         
         for (std::string_view::size_type start = 0; start < str.length();) {
             const auto end = str.find(delimiter, start);
             if (end != std::string_view::npos) {
-                result.emplace_back(str.substr(start, end - start));
+                auto part = str.substr(start, end - start);
+                if (!(skipWhitespace && isEmptyOrWhitespace(part))) {
+                    result.emplace_back(part);
+                }
                 start = end + 1;
             } else {
-                result.emplace_back(str.substr(start));
+                auto part = str.substr(start);
+                if (!(skipWhitespace && isEmptyOrWhitespace(part))) {
+                    result.emplace_back(part);
+                }
                 break;
             }
         }
         return result;
     }
     
-    constexpr std::vector<std::string> split(std::string_view str, std::string_view delimiter) {
+    constexpr std::vector<std::string> split(std::string_view str, std::string_view delimiter, bool skipWhitespace = false) {
         std::vector<std::string> result;
         
         for (std::string_view::size_type start = 0; start < str.length();) {
             const auto end = str.find(delimiter, start);
             if (end != std::string_view::npos) {
-                result.emplace_back(str.substr(start, end - start));
+                auto part = str.substr(start, end - start);
+                if (!(skipWhitespace && isEmptyOrWhitespace(part))) {
+                    result.emplace_back(part);
+                }
                 start = end + delimiter.length();
             } else {
-                result.emplace_back(str.substr(start));
+                auto part = str.substr(start);
+                if (!(skipWhitespace && isEmptyOrWhitespace(part))) {
+                    result.emplace_back(part);
+                }
                 break;
             }
         }
